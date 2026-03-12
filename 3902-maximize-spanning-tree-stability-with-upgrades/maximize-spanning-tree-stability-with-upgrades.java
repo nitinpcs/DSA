@@ -34,7 +34,7 @@ class DisjointSet {
 }
 
 class Solution {
-    //Question -> find max of min 
+    
     public int maxStability(int n, int[][] edges, int k) {
         int must = 0;
         int maxPossible = Integer.MAX_VALUE;
@@ -43,17 +43,18 @@ class Solution {
             if(e[3] == 1 ){
                 must++;
                 int u = e[0] , v = e[1];
-                //if already connected but this edge is must-> makes cycle->No mst possible
+                
                 if(ds.findUPar(u) == ds.findUPar(v)) return -1;
                 ds.UnionBySize(e[0] , e[1]);
                 maxPossible = Math.min(maxPossible , e[2]);
             }
         }
-        //if must edges > n-1 -> then n-1 edges not possible
+        
         if(must > n-1) return -1;
         if(must == n-1) return maxPossible;
-        //maxi is min of strengths of all must nodes
+        
         int low = 1 , high = maxPossible;
+        if(high == Integer.MAX_VALUE) high = (int)1e9;
         int ans = -1;
         while(low <= high){
             int mid = low + (high-low)/2;
@@ -69,16 +70,17 @@ class Solution {
     boolean canCreateTree(int n,int[][] edges,int threshold , int k){
         DisjointSet ds = new DisjointSet(n);
         int addedcnt = 0;
-        //add all must edges
+
         for(int[] e : edges){
             if(e[3] == 1){
                 int u = e[0] , v = e[1];
-                addedcnt++;
-                ds.UnionBySize(u,v);
-                
+                if(ds.findUPar(u) != ds.findUPar(v)){
+                    ds.UnionBySize(u,v);
+                    addedcnt++;
+                }
             }
-        }
-        //add non must edges that connect 2 components without any upgrade
+}
+        
         for(int[] e : edges){
             if(e[3] == 0 && e[2] >= threshold){
                 int u = e[0] , v = e[1];
@@ -89,7 +91,7 @@ class Solution {
             }
         }
 
-        //add non must edges  with Upgrade that connects 2 components
+        
         for(int[] e : edges){
             if(k == 0) break;
             if(e[3] == 0 && e[2] < threshold && 2*e[2] >= threshold){
