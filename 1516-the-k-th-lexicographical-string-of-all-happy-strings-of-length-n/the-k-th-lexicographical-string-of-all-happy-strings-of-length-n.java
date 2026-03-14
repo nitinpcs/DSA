@@ -1,35 +1,35 @@
 class Solution {
+
     int count = 0;
-    String ans ;
+    String ans = "";
+
     public String getHappyString(int n, int k) {
-        ans = "";
-        happyString(n, new StringBuilder(), k);
+        dfs(n, k, new StringBuilder());
         return ans;
     }
 
-    void happyString(int n, StringBuilder sb, int k){
-        if(n==0){
+    void dfs(int n, int k, StringBuilder sb) {
+
+        if (sb.length() == n) {
             count++;
-            if(count == k){
+            if (count == k) {
                 ans = sb.toString();
             }
-            sb.deleteCharAt(sb.length()-1);
             return;
         }
-        if(n < 0) return;
 
-        if(sb.length()==0 || sb.charAt(sb.length()-1) != 'a') {
-            happyString(n-1, sb.append('a'), k);
+        for (char ch : new char[]{'a','b','c'}) {
+
+            if (sb.length() > 0 && sb.charAt(sb.length()-1) == ch)
+                continue;
+
+            sb.append(ch);
+
+            dfs(n, k, sb);
+
+            if (!ans.equals("")) return; 
+
+            sb.deleteCharAt(sb.length()-1);
         }
-        if(!ans.equals("")) return;
-        if(sb.length()==0 || sb.charAt(sb.length()-1) != 'b') {
-            happyString(n-1, sb.append('b'), k);
-        }
-        if(!ans.equals("")) return;
-        if(sb.length()==0 || sb.charAt(sb.length()-1) != 'c') {
-            happyString(n-1, sb.append('c'), k);
-        }
-        if(!ans.equals("")) return;
-        if(sb.length() > 0) sb.deleteCharAt(sb.length()-1);
     }
 }
