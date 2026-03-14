@@ -1,47 +1,46 @@
 class Solution {
+    boolean[][] visited;
+    int[] dx = {0,1,0,-1};
+    int[] dy = {1,0,-1,0};
     public int minimumEffortPath(int[][] heights) {
         int n = heights.length;
         int m = heights[0].length;
-        int[] dx = {1,0,-1,0};
-        int[] dy = {0,1,0,-1};
-        PriorityQueue<Pair> pq = new PriorityQueue<>((a,b)->Integer.compare(a.effort, b.effort));
-        pq.add(new Pair(0, 0, 0));
-        
-        int[][] dist = new int[n][m];
-        for(int[] row : dist) Arrays.fill(row, Integer.MAX_VALUE);
-        dist[0][0] = 0;
-        while(!pq.isEmpty()){
-            Pair temp = pq.poll();
 
-            if(temp.effort > dist[temp.x][temp.y]) continue;
-            if(temp.x == n-1 && temp.y == m-1) return temp.effort;
+        int left = 0;
+        int right = 1000000;
+
+        while(left <= right) {
+            int mid = left + (right - left)/2;
+            visited = new boolean[n][m];
+            for(boolean[] row : visited) Arrays.fill(row, false);
             
-            for(int i=0; i<4; i++){
-                int nx = temp.x + dx[i];
-                int ny = temp.y + dy[i];
-                if(isValid(nx, ny, n, m)){
-                    int newEffort = Math.max(temp.effort, Math.abs(heights[nx][ny] - heights[temp.x][temp.y])); 
-                   
-                    if (newEffort < dist[nx][ny]) {
-                        dist[nx][ny] = newEffort;
-                        pq.offer(new Pair(nx, ny, newEffort));
-                    }
+            dfs(mid, 0, 0, heights);
+
+            if(visited[n-1][m-1]){
+                right = mid - 1;
+            }
+            else left = mid + 1;
+        }
+        return left;
+    }
+
+    void dfs(int threshold, int x, int y, int[][] heights){
+        if(visited[x][y]) return;
+        visited[x][y] = true;
+
+        for(int i = 0; i < 4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if(isValid(nx, ny, heights.length, heights[0].length)) {
+                int effort = Math.abs(heights[nx][ny] - heights[x][y]);
+                if(effort <= threshold) {
+                    dfs(threshold, nx, ny, heights);
                 }
             }
         }
-        return 0;
     }
 
-    boolean isValid(int x, int y, int n, int m){
-        return x>=0 && x<n && y>=0 && y<m;
-    }
-
-    class Pair{
-        int x, y, effort;
-        Pair(int i, int j, int eff){
-            x = i;
-            y = j;
-            effort = eff;
-        }
+    boolean isValid(int x, int y, int n, int m) {
+        return x >= 0 && x < n && y >= 0 && y < m;
     }
 }
