@@ -1,35 +1,32 @@
 class Solution {
 
-    int count = 0;
-    String ans = "";
-
     public String getHappyString(int n, int k) {
-        dfs(n, k, new StringBuilder());
-        return ans;
-    }
 
-    void dfs(int n, int k, StringBuilder sb) {
+        int total = 3 * (1 << (n - 1));
+        if (k > total) return "";
 
-        if (sb.length() == n) {
-            count++;
-            if (count == k) {
-                ans = sb.toString();
+        StringBuilder ans = new StringBuilder();
+        char prev = '#';
+
+        for (int i = 0; i < n; i++) {
+
+            for (char c : new char[]{'a','b','c'}) {
+
+                if (c == prev) continue;
+
+                int remaining = n - i - 1;
+                int count = 1 << remaining;
+
+                if (k > count) {
+                    k -= count;
+                } else {
+                    ans.append(c);
+                    prev = c;
+                    break;
+                }
             }
-            return;
         }
 
-        for (char ch : new char[]{'a','b','c'}) {
-
-            if (sb.length() > 0 && sb.charAt(sb.length()-1) == ch)
-                continue;
-
-            sb.append(ch);
-
-            dfs(n, k, sb);
-
-            if (!ans.equals("")) return; 
-
-            sb.deleteCharAt(sb.length()-1);
-        }
+        return ans.toString();
     }
 }
