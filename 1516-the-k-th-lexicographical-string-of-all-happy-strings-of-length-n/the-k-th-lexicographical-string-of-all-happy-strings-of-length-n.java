@@ -1,30 +1,35 @@
 class Solution {
-    List<String> list;
+    int count = 0;
+    String ans ;
     public String getHappyString(int n, int k) {
-        list = new ArrayList<>();
-        happyString(n, new StringBuilder());
-        Collections.sort(list);
-        return list.size() >= k ? list.get(k-1) : "";
+        ans = "";
+        happyString(n, new StringBuilder(), k);
+        return ans;
     }
 
-    void happyString(int n, StringBuilder sb){
+    void happyString(int n, StringBuilder sb, int k){
         if(n==0){
-            list.add(sb.toString());
+            count++;
+            if(count == k){
+                ans = sb.toString();
+            }
             sb.deleteCharAt(sb.length()-1);
             return;
         }
         if(n < 0) return;
 
         if(sb.length()==0 || sb.charAt(sb.length()-1) != 'a') {
-            happyString(n-1, sb.append('a'));
+            happyString(n-1, sb.append('a'), k);
         }
+        if(!ans.equals("")) return;
         if(sb.length()==0 || sb.charAt(sb.length()-1) != 'b') {
-            happyString(n-1, sb.append('b'));
+            happyString(n-1, sb.append('b'), k);
         }
+        if(!ans.equals("")) return;
         if(sb.length()==0 || sb.charAt(sb.length()-1) != 'c') {
-            happyString(n-1, sb.append('c'));
+            happyString(n-1, sb.append('c'), k);
         }
-
+        if(!ans.equals("")) return;
         if(sb.length() > 0) sb.deleteCharAt(sb.length()-1);
     }
 }
