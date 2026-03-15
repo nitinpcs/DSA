@@ -1,13 +1,22 @@
 class Solution {
     public boolean judgeSquareSum(int c) {
-        int l = 0;
-        int r = (int)Math.sqrt(c);
+        for (long a = 0; a * a <= c; a++) {
+            int target = c - (int)(a * a);
+            if (binarySearch(target)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-        while(l <= r) {
-            long num = (long)l*l + (long)r*r;
-            if(num == c) return true;
-            else if(num < c) l++;
-            else r--;
+    private boolean binarySearch(int target) {
+        int left = 0, right = (int)Math.sqrt(target);
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int square = mid * mid;
+            if (square == target) return true;
+            else if (square < target) left = mid + 1;
+            else right = mid - 1;
         }
         return false;
     }
