@@ -5,11 +5,6 @@ class Solution {
             sb.setCharAt(0,'2');
             sb.setCharAt(1,'3');
         }
-        if(sb.charAt(3)=='?' && sb.charAt(4)=='?') {
-            sb.setCharAt(3,'5');
-            sb.setCharAt(4,'9');
-        }
-
         if(sb.charAt(0) == '?'){
             if(sb.charAt(1) >= '4') sb.setCharAt(0,'1');
             else sb.setCharAt(0,'2');
