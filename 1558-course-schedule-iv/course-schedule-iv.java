@@ -1,17 +1,23 @@
 class Solution {
-    List<List<Integer>> adj ;
     public List<Boolean> checkIfPrerequisite(int numCourses, int[][] prerequisites, int[][] queries) {
-        adj = new ArrayList<>();
-        for(int i=0; i<numCourses; i++) adj.add(new ArrayList<>());
-        for(int[] c : prerequisites) {
-            int u = c[0];
-            int v = c[1];
-            adj.get(u).add(v);
-        }
+
         boolean[][] isReachable = new boolean[numCourses][numCourses];
-        for(int i=0; i<numCourses; i++) {
-            bfs(i, numCourses, isReachable);
+        for(int[] p : prerequisites) {
+            int u = p[0];
+            int v = p[1];
+            isReachable[u][v] = true;
         }
+
+        for(int k=0; k<numCourses; k++){
+            for(int i=0; i<numCourses; i++){
+                for(int j=0; j<numCourses; j++){
+                    if(isReachable[i][k] && isReachable[k][j]){
+                        isReachable[i][j] = true;
+                    }
+                }
+            }
+        }
+
         List<Boolean> ans = new ArrayList<>();
         for(int[] q : queries) {
             int u = q[0];
@@ -20,26 +26,5 @@ class Solution {
             ans.add(val);
         }
         return ans;
-    }
-
-
-    void bfs(int src, int n, boolean[][] isReachable) {
-        Queue<Integer> q = new LinkedList<>();
-        boolean[] vis = new boolean[n];
-
-        q.add(src);
-        vis[src] = true;
-
-        while(!q.isEmpty()) {
-            int t = q.poll();
-
-            for(int v : adj.get(t)){
-                if(!vis[v]) {
-                    vis[v] = true;
-                    isReachable[src][v] = true;
-                    q.offer(v);
-                }
-            }
-        }
     }
 }
