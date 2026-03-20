@@ -14,20 +14,26 @@
  * }
  */
 class Solution {
+    HashMap<TreeNode, Integer> memo = new HashMap<>();
+
     public int rob(TreeNode root) {
         if(root == null) return 0;
-        int[] ans = dfs(root);
-        return Math.max(ans[0], ans[1]);
-    }
 
-    int[] dfs(TreeNode root) {
-        if(root == null) return new int[]{0, 0};
+        if(memo.containsKey(root)) return memo.get(root);
 
-        int[] left = dfs(root.left);
-        int[] right = dfs(root.right);
+        int pick = root.val;
+        if(root.left != null){
+            pick += rob(root.left.left) + rob(root.left.right);
+        }
+        if(root.right != null){
+            pick += rob(root.right.left) + rob(root.right.right);
+        }
 
-        int rob = root.val + left[1] + right[1];
-        int skip = Math.max(left[1], left[0]) + Math.max(right[1], right[0]);
-        return new int[]{rob, skip};
+        int notPick = rob(root.left) + rob(root.right);
+
+        int res = Math.max(pick, notPick);
+        memo.put(root, res);
+
+        return res;
     }
 }
