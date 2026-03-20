@@ -17,10 +17,10 @@ class Solution {
             return dp[i][j] = helper(word1, word2, dp, i-1, j-1);
         }
 
-        int n1 = 1 + helper(word1, word2, dp, i-1, j-1);
-        int n2 = 1 + helper(word1, word2, dp, i-1, j);
-        int n3 = 1 + helper(word1, word2, dp, i, j-1);
+        int n1 = helper(word1, word2, dp, i-1, j-1);
+        int n2 = helper(word1, word2, dp, i-1, j);
+        int n3 = helper(word1, word2, dp, i, j-1);
 
-        return dp[i][j] = Math.min(n1, Math.min(n2, n3));
+        return dp[i][j] = Math.min(n1, Math.min(n2, n3)) + 1;
     }
 }
