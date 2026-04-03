@@ -78,3 +78,63 @@ class Solution {
         }
     }
 }
+
+
+// class Solution {
+
+//     public List<Integer> countSmaller(int[] nums) {
+
+//         int n = nums.length;
+
+//         // Step 1: compression
+//         int[] temp = nums.clone();
+//         Arrays.sort(temp);
+
+//         Map<Integer, Integer> map = new HashMap<>();
+//         int idx = 1;
+
+//         for (int x : temp) {
+//             if (!map.containsKey(x)) {
+//                 map.put(x, idx++);
+//             }
+//         }
+
+//         // Step 2: BIT
+//         int[] bit = new int[idx + 1];
+
+//         List<Integer> ans = new ArrayList<>();
+
+//         // Step 3: process from right
+//         for (int i = n - 1; i >= 0; i--) {
+
+//             int val = map.get(nums[i]);
+
+//             // count smaller
+//             ans.add(query(bit, val - 1));
+
+//             // update
+//             update(bit, val, 1);
+//         }
+
+//         Collections.reverse(ans);
+//         return ans;
+//     }
+
+//     // prefix sum query
+//     int query(int[] bit, int i) {
+//         int sum = 0;
+//         while (i > 0) {
+//             sum += bit[i];
+//             i -= i & (-i);
+//         }
+//         return sum;
+//     }
+
+//     // update BIT
+//     void update(int[] bit, int i, int val) {
+//         while (i < bit.length) {
+//             bit[i] += val;
+//             i += i & (-i);
+//         }
+//     }
+// }
