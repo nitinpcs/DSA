@@ -1,7 +1,7 @@
 class Robot {
     int w, h;
     int x = 0, y = 0;
-    int dir = 1; // 0=N,1=E,2=S,3=W
+    int dir = 1; 
     int perimeter;
 
     public Robot(int width, int height) {
