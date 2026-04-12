@@ -1,39 +1,53 @@
 class Solution {
-    int[][][] dp;
-
     public int minimumDistance(String word) {
         int n = word.length();
-        dp = new int[26][26][n];
-        for (int[][] row : dp) {
-            for (int[] r : row) Arrays.fill(r, -1);
+        int[][] dp = new int[26][26];
+
+        for (int i = 0; i < 26; i++) {
+            Arrays.fill(dp[i], Integer.MAX_VALUE);
         }
+
         int first = word.charAt(0) - 'A';
 
+        for (int j = 0; j < 26; j++) {
+            dp[first][j] = 0;
+        }
+
+        for (int i = 1; i < n; i++) {
+            int curr = word.charAt(i) - 'A';
+
+            int[][] newDp = new int[26][26];
+            for (int[] row : newDp) Arrays.fill(row, Integer.MAX_VALUE);
+
+            for (int j = 0; j < 26; j++) {
+                for (int k = 0; k < 26; k++) {
+                    if (dp[j][k] == Integer.MAX_VALUE) continue;
+
+                    int cost1 = dp[j][k] + dist(j, curr);
+                    newDp[curr][k] = Math.min(newDp[curr][k], cost1);
+
+                    int cost2 = dp[j][k] + dist(k, curr);
+                    newDp[j][curr] = Math.min(newDp[j][curr], cost2);
+                }
+            }
+
+            dp = newDp;
+        }
+
         int ans = Integer.MAX_VALUE;
+
         for (int i = 0; i < 26; i++) {
-            ans = Math.min(ans, dfs(word, first, i, 1));
+            for (int j = 0; j < 26; j++) {
+                ans = Math.min(ans, dp[i][j]);
+            }
         }
 
         return ans;
     }
 
-    int getDist(int c1, int c2) {
-        int x1 = c1 / 6, y1 = c1 % 6;
-        int x2 = c2 / 6, y2 = c2 % 6;
+    int dist(int a, int b) {
+        int x1 = a / 6, y1 = a % 6;
+        int x2 = b / 6, y2 = b % 6;
         return Math.abs(x1 - x2) + Math.abs(y1 - y2);
-    }
-
-    int dfs(String word, int c1, int c2, int idx) {
-        if (idx == word.length()) return 0;
-
-        if (dp[c1][c2][idx] != -1) return dp[c1][c2][idx];
-
-        int next = word.charAt(idx) - 'A';
-
-        int cost1 = dfs(word, next, c2, idx + 1) + getDist(c1, next);
-
-        int cost2 = dfs(word, c1, next, idx + 1) + getDist(c2, next);
-
-        return dp[c1][c2][idx] = Math.min(cost1, cost2);
     }
 }
