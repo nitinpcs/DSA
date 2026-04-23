@@ -1,29 +1,24 @@
 class Solution {
     public int[] minOperations(String boxes) {
         int n = boxes.length();
-        int total = 0, curr = 0;
+        int[] res = new int[n];
+        int count = 0, moves = 0;
+
         for(int i=0; i<n; i++) {
-            if(boxes.charAt(i) == '1') {
-                total += i;
-                curr++;
-            }
+            res[i] = moves;
+            if(boxes.charAt(i) == '1') count++;
+            moves += count;
         }
 
-        int[] moves = new int[n];
-        int prefix = 0;
-        int count = 0;
-        for(int i=0; i<n; i++) {
-            int left = i*count - prefix;
-            int temp = boxes.charAt(i)=='1' ? curr-count-1 : curr-count;
-            int cur = boxes.charAt(i)=='1' ? total-prefix-i : total-prefix;
-            int right = cur - i*temp;
+        moves = 0;
+        count = 0;
 
-            moves[i] = left + right;
-            if(boxes.charAt(i) == '1') {
-                prefix += i;
-                count++;
-            }
+        for(int i=n-1; i>=0; i--) {
+            res[i] += moves;
+            if(boxes.charAt(i) == '1') count++;
+            moves += count;
         }
-        return moves;
+
+        return res;
     }
 }
