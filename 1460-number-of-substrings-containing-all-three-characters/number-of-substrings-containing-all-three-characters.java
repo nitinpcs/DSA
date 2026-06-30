@@ -1,21 +1,11 @@
 class Solution {
     public int numberOfSubstrings(String s) {
-        int n = s.length();
-        int[] freq = new int[3];
-
+        int[] indices = {-1, -1, -1};
         int ans = 0;
-        int l = 0;
-        for(int r = 0; r  < n; r++) {
-            freq[s.charAt(r) - 'a']++;
-            while(hasAllThree(freq)) {
-                ans += n - r;
-                freq[s.charAt(l) - 'a']--;
-                l++;
-            }
+        for(int i=0; i<s.length(); i++) {
+            indices[(s.charAt(i) & 31) - 1] = i;
+            ans += Math.min(indices[0], Math.min(indices[1], indices[2])) + 1;
         }
         return ans;
-    }
-    boolean hasAllThree(int[] x) {
-        return x[0] > 0 && x[1] > 0 && x[2] > 0;
     }
 }
