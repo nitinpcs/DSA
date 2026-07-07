@@ -1,15 +1,16 @@
 class Solution {
     public long sumAndMultiply(int n) {
-        String s = String.valueOf(n);
         long num = 0;
         int sum = 0;
-        for(int i=0; i<s.length(); i++) {
-            int rem = s.charAt(i) - '0';
-            if(rem > 0) {
-                num = num*10 + rem;
-                sum += rem;
-            }
+        int len = 1;
+        while(n > 0) {
+            int d = n % 10;
+            num = d * len + num;
+            if(d != 0) len *= 10;
+            sum += d;
+            n /= 10;
         }
-        return num * sum ;
+        return sum * num;
     }
 }
+
