@@ -36,7 +36,7 @@ class Trie {
                     index = i;
                 }
             }
-            if(count != 1 || node.isEnd()) break;
+            if(count > 1 || node.isEnd()) break;
             sb.append((char)(index+'a'));
             node = node.get((char)(index+'a'));
         }
