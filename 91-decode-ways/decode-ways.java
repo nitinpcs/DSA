@@ -1,30 +1,22 @@
 class Solution {
-    int[] memo;
     public int numDecodings(String s) {
         int n = s.length();
-        memo = new int[n];
-        Arrays.fill(memo, -1);
+        int[] dp = new int[n+1];
 
-        countWays(s, 0);
-        return memo[0]==-1 ? 0 : memo[0];
-    }
+        dp[0] = 1;
+        char c = s.charAt(0);
+        dp[1] = s.charAt(0)=='0' ? 0 : 1;
 
-    boolean isValid(String s) {
-        int n = Integer.parseInt(s);
-        if(n > 26) return false;
-        return true;
-    }
+        for(int i=2; i<=n; i++) {
+            char c1 = s.charAt(i-1);
+            char c0 = s.charAt(i-2);
 
-    int countWays(String s, int idx) {
-        if(idx >= s.length()) return 1;
-        if(memo[idx] != -1) return memo[idx];
-
-        if(s.charAt(idx) == '0') return 0;
-        int ways = countWays(s, idx+1);
-        if(idx+1 < s.length() && isValid(s.substring(idx, idx+2))) {
-            ways += countWays(s, idx+2);
+            if(c1 != '0') dp[i] = dp[i-1];
+            int val = (c0 - '0') * 10 + (c1 - '0');
+            if(val>=10 && val <= 26) {
+                dp[i] += dp[i-2];
+            }
         }
-
-        return memo[idx] = ways;
+        return dp[n];
     }
 }
