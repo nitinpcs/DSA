@@ -5,22 +5,21 @@ class Solution {
         for(char ch : word.toCharArray()) freq[ch-'a']++;
         Arrays.sort(freq);
 
-        int counter = 1;
         int push = 0;
-        int i=25;
-        while(i >= 0) {
-            int j=i;
-            int temp = 0;
-            while(j >= 0 && temp < 8) {
-                if(freq[j] > 0) {
-                    push += freq[j]*counter;
-                    temp++;
-                }
-                j--;
-            }
-            i = j;
-            counter++;
+        reverse(freq);
+        for(int i=0; i<26; i++) {
+            if(freq[i] == 0) break;
+            push += (i/8 +1)*freq[i];
         }
         return push;
+    }
+
+    void reverse(int[] x) {
+        int i=0, j=25;
+        while(i < j) {
+            int temp = x[i];
+            x[i++] = x[j];
+            x[j--] = temp;
+        }
     }
 }
