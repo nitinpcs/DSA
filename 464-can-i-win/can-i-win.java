@@ -5,10 +5,11 @@ class Solution {
         if(sum < desiredTotal) return false;
         if(desiredTotal < 0) return true;
         Boolean[] dp = new Boolean[1  << maxChoosableInteger];
-        return whowins(maxChoosableInteger, desiredTotal, 0, mask, dp,true);
+
+        return whowins(maxChoosableInteger, desiredTotal, 0, mask, dp);
     }
 
-    boolean whowins(int max, int total, int cur, int mask, Boolean[] dp, boolean first) {
+    boolean whowins(int max, int total, int cur, int mask, Boolean[] dp) {
         if(dp[mask] != null) return dp[mask];
 
         for(int i=0; i<max; i++) {
@@ -16,7 +17,7 @@ class Solution {
             if(cur + i+1 >= total) {
                 return dp[mask] = true;
             }
-            if(!whowins(max, total, cur+i+1, mask^(1<<i), dp, !first)) return dp[mask] = true;
+            if(!whowins(max, total, cur+i+1, mask^(1<<i), dp)) return dp[mask] = true;
         }
         return dp[mask] = false;
     }
