@@ -10,7 +10,7 @@ class Solution {
     }
 
     int getDiff(int[] stones, int i, int j, int sum, Integer[][] dp) {
-        if(i > j) return 0;
+        if(i == j) return 0;
         if(dp[i][j] != null) return dp[i][j];
 
         int front = (sum - stones[i]) - getDiff(stones, i+1, j, sum-stones[i], dp);
