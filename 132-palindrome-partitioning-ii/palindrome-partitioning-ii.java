@@ -12,28 +12,19 @@ class Solution {
             }
         }
 
-        int[][] dp = new int[n][n];
-        for(int r=0; r<n; r++) Arrays.fill(dp[r], -1);
+        int[] dp = new int[n];
 
-        return minCuts(0, n-1, pal, dp);
-    }
-
-    int minCuts(int i, int j, boolean[][] pal, int[][] dp) {
-        if(i >= j || pal[i][j]) return 0;
-        if(dp[i][j] != -1) return dp[i][j];
-
-        int right = 0;
-        int min = Integer.MAX_VALUE;
-        for(int k=i; k<=j; k++) {
-            if(!pal[i][k]) continue;
-            if(dp[k+1][j] != -1) right = dp[k+1][j];
+        for(int i=0; i<n; i++) {
+            if(pal[0][i]) dp[i] = 0;
             else {
-                right = minCuts(k+1, j, pal, dp);
-                dp[k+1][j] = right;
+                dp[i] = i;
+                for(int j=i; j>=1; j--) {
+                    if(pal[j][i]) {
+                        dp[i] = Math.min(dp[i], dp[j-1]+1);
+                    }
+                }
             }
-
-            min = Math.min(min, right+1);
         }
-        return dp[i][j] = min;
+        return dp[n-1];
     }
 }
