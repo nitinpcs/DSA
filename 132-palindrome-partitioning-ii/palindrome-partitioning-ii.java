@@ -1,30 +1,39 @@
 class Solution {
     public int minCut(String s) {
-        int[] dp = new int[s.length()];
-        Arrays.fill(dp, -1);
-        return cuts(s, 0, dp) ;
-    }
+        int n =  s.length();
 
-    public boolean isPal(String s) {
-        int i=0, j=s.length()-1;
+        boolean[][] pal = new boolean[n][n];
+        for(int i=0 ; i<n; i++) pal[i][i] = true;
 
-        while(i < j) {
-            if(s.charAt(i) != s.charAt(j)) return false;
-            i++;
-            j--;
-        }
-        return true;
-    }
-
-    int cuts(String s, int idx, int[] dp) {
-        if(idx >= s.length()) return -1;
-        if(dp[idx] != -1) return dp[idx];
-        int min = Integer.MAX_VALUE;
-        for(int i=idx; i<s.length(); i++) {
-            if(isPal(s.substring(idx, i+1))) {
-                min = Math.min(min, 1+cuts(s, i+1, dp));
+        for(int len=2; len<=n; len++) {
+            for(int i=0; i+len-1 < n; i++) {
+                int j = i+len-1;
+                pal[i][j] = s.charAt(i) == s.charAt(j) && (len == 2 || pal[i+1][j-1]); 
             }
-        } 
-        return dp[idx] = min;
+        }
+
+        int[][] dp = new int[n][n];
+        for(int r=0; r<n; r++) Arrays.fill(dp[r], -1);
+
+        return minCuts(0, n-1, pal, dp);
+    }
+
+    int minCuts(int i, int j, boolean[][] pal, int[][] dp) {
+        if(i >= j || pal[i][j]) return 0;
+        if(dp[i][j] != -1) return dp[i][j];
+
+        int right = 0;
+        int min = Integer.MAX_VALUE;
+        for(int k=i; k<=j; k++) {
+            if(!pal[i][k]) continue;
+            if(dp[k+1][j] != -1) right = dp[k+1][j];
+            else {
+                right = minCuts(k+1, j, pal, dp);
+                dp[k+1][j] = right;
+            }
+
+            min = Math.min(min, right+1);
+        }
+        return dp[i][j] = min;
     }
 }
