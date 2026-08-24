@@ -11,20 +11,14 @@ class Solution {
                 pal[i][j] = s.charAt(i) == s.charAt(j) && (len == 2 || pal[i+1][j-1]); 
             }
         }
-        Boolean[][] dp = new Boolean[n][4];
-        return check(s, 0, 3, dp, pal);
-    }
-
-
-    boolean check(String s, int idx, int k, Boolean[][] dp, boolean[][] pal) {
-        if(k < 0) return false;
-        if(idx >= s.length()) return k == 0;
-        if(dp[idx][k] != null) return dp[idx][k]; 
-        for(int i=idx; i<s.length(); i++) {
-            if(pal[idx][i]) {
-                if(check(s, i+1, k-1, dp, pal)) return dp[idx][k] = true;
+        
+        for(int i=0; i<n-2; i++) {
+            if(!pal[0][i]) continue;
+            for(int j=i+1; j<n-1; j++) {
+                if(pal[i+1][j] && pal[j+1][n-1]) return true;
             }
         }
-        return dp[idx][k] = false;
+
+        return false;
     }
 }
