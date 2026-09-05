@@ -1,7 +1,5 @@
 class Solution {
 
-    static final int MIN = Integer.MIN_VALUE;
-
     class Event{
         int start;
         int end;
@@ -28,17 +26,15 @@ class Solution {
     }
 
     public int findMaxVal(Event[] event, int k, int idx, int[][] dp) {
-        if(idx >= event.length) {
-            return k < 0 ? MIN : 0;
+        if(idx >= event.length || k == 0) {
+            return 0;
         }
-        if(k < 0) return MIN;
         if(dp[idx][k] != -1) return dp[idx][k];
 
         int skip = findMaxVal(event, k, idx+1, dp);
 
         int next = findNext(event, event[idx].end);
-        int take = findMaxVal(event, k-1, next, dp);
-        if(take != MIN) take += event[idx].val;
+        int take = findMaxVal(event, k-1, next, dp) + event[idx].val;
 
         return dp[idx][k] = Math.max(skip, take);
     }
