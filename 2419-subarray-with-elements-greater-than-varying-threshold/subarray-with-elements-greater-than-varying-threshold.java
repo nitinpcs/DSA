@@ -4,7 +4,7 @@ class Solution {
         int[] prev = new int[n];
         int[] next = new int[n];
 
-        Stack<Integer> st = new Stack<>();
+        ArrayDeque<Integer> st = new ArrayDeque<>();
         for(int i = 0; i < n; i++) {
             while(!st.isEmpty() && nums[st.peek()] >= nums[i]) {
                 st.pop();
