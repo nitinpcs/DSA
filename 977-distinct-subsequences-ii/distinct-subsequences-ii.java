@@ -8,9 +8,12 @@ class Solution {
 
         for(int i = 0; i < n; i++) {
             int ch = s.charAt(i) - 'a';
-            long newSeq = (total + 1) % MOD;
-            total = (total + newSeq - dp[ch] + MOD) % MOD;
-            dp[ch] = newSeq;
+
+            long newSeq = (total - dp[ch] + 1 + MOD) % MOD;
+
+            total = (total + newSeq) % MOD;
+
+            dp[ch] = (dp[ch] + newSeq) % MOD;
         }
         return (int)total;
     }
