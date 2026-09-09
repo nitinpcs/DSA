@@ -38,12 +38,10 @@ class Solution {
             int s = meet[0];
             int e = meet[1];
 
-            // Free all rooms available by meeting start
             while (!busy.isEmpty() && busy.peek().end <= s) {
                 empty.add(busy.poll().room);
             }
 
-            // Some room is available
             if (!empty.isEmpty()) {
 
                 int room = empty.poll();
@@ -53,7 +51,6 @@ class Solution {
                 meetCount[room]++;
             }
 
-            // All rooms are busy
             else {
 
                 Room temp = busy.poll();
