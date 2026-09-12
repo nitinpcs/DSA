@@ -13,14 +13,14 @@ class Solution {
 
         int skip = countMaxVal(events, idx + 1, dp, cnt);
 
-        int newIdx = getNext(events, events[idx][1]);
+        int newIdx = getNext(events, events[idx][1], idx);
         int take = events[idx][2] + countMaxVal(events, newIdx, dp, cnt - 1);
 
         return dp[idx][cnt] = Math.max(skip, take);
     }
 
-    int getNext(int[][] events, int val) {
-        int lo = 0;
+    int getNext(int[][] events, int val, int s) {
+        int lo = s + 1;
         int high = events.length - 1;
         int ans = events.length;
 
