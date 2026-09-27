@@ -5,7 +5,7 @@ class Solution {
         int x2 = target[0];
         int y2 = target[1];
         if(x1==x2 && y1==y2) return 0;
-        if((x1==y2 && x2==y1) || x1 == x2 || y1 == y2 || Math.abs(x1-x2) == Math.abs(y1-y2)) return 1;
+        if(x1 == x2 || y1 == y2 || Math.abs(x1-x2) == Math.abs(y1-y2)) return 1;
 
         return 2;
     }
