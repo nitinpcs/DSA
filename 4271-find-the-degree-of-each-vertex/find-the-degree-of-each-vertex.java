@@ -7,7 +7,7 @@ class Solution {
         for(int i = 0; i < n; i++) {
             int deg = 0;
             for(int j = 0; j < m; j++) {
-                if(matrix[i][j] == 1) deg++;
+                deg += matrix[i][j];
             }
             degree[i] = deg;
         }
