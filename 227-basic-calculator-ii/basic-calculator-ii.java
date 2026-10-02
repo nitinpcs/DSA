@@ -1,30 +1,27 @@
 class Solution {
     public int calculate(String s) {
-        int len = s.length();
+        int n = s.length();
         ArrayDeque<Integer> st = new ArrayDeque<>();
+        char ops = '+';
+        int num = 0;
 
-        int curNumber = 0;
-        char operation = '+'; 
-
-        for(int i=0; i<len; i++) {
-            char cur = s.charAt(i);
-            if(Character.isDigit(cur)) {
-                curNumber = curNumber*10 + (cur - '0');
+        for(int i = 0; i < n; i++) {
+            char ch = s.charAt(i);
+            if(Character.isDigit(ch)) {
+                num = num*10 + (ch - '0');
             }
-            if(!Character.isDigit(cur) && !Character.isWhitespace(cur) || i == len - 1) {
-                if(operation == '+') st.push(curNumber);
-                else if(operation == '-') st.push(-curNumber);
-                else if(operation == '*') st.push(st.pop() * curNumber);
-                else st.push(st.pop() / curNumber);
+            if(!Character.isDigit(ch) && !Character.isWhitespace(ch) || i == n-1) {
+                if(ops == '+') st.push(num);
+                else if(ops == '-') st.push(-num);
+                else if(ops == '*') st.push(st.pop() * num);
+                else st.push(st.pop() / num);
 
-                curNumber = 0;
-                operation = cur;
+                num = 0;
+                ops = ch;
             }
         }
-        
-        int result = 0;
-        while(!st.isEmpty()) result += st.pop();
-
-        return result;
+        int ans = 0;
+        for(int i : st) ans += i;
+        return ans ;
     }
 }
