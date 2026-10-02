@@ -1,21 +1,21 @@
 class Solution {
-    public int candy(int[] rating) {
-        int n = rating.length;
+    public int candy(int[] ratings) {
+        int n = ratings.length;
         int[] candies = new int[n];
-        Arrays.fill(candies, 1);
+        Arrays.fill(candies, 1) ;
 
         for(int i = 0; i < n - 1; i++) {
-            if(rating[i] < rating[i+1]) {
+            if(ratings[i] < ratings[i+1]) {
                 candies[i+1] = candies[i] + 1;
             }
         }
-
+        int total = 0;
         for(int i = n-2; i>=0; i--) {
-            if(rating[i] > rating[i+1]) {
-                candies[i] = Math.max(candies[i], candies[i+1] +1);
+            if(ratings[i] > ratings[i+1]) {
+                candies[i] = Math.max(candies[i], candies[i+1]+1);
             }
         }
-
-        return Arrays.stream(candies).sum();
+        for(int i : candies) total += i;
+        return total;
     }
 }
