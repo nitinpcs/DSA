@@ -17,6 +17,6 @@ class Solution {
             }
             if(max < 0) return false;
         }
-        return min == 0;
+        return min <= 0;
     }
 }
